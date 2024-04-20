@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
   };
 
   try {
+    
     const response = await fetch("https://api.tutujin.com/v1/models", requestOptions);
     const result = await response.json();
     return {

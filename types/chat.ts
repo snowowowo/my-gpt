@@ -6,5 +6,7 @@ export interface Message {
 export interface Chat {
   id: string;
   name: string;
+  modelId: string;
   messages: Message[];
+  inputText: string;
 }

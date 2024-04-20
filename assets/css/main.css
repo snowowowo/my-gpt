@@ -2,6 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    padding: 0;
+html, body, #__nuxt {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  display: none;
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* 回复内容 */
+.markdown-body code {
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.markdown-body p {
+    line-height: 1.8;
+}
+.markdown-body p img {
+    border-radius: 8px;
+    width: 200px;
 }

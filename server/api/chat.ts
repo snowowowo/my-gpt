@@ -1,5 +1,6 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
+  console.log("%c [ body ]-3", "font-size:13px; background:pink; color:#bf2c9f;", body);
   const modelId = body.modelId;
   const messages = body.messages;
 
@@ -9,12 +10,12 @@ export default defineEventHandler(async (event) => {
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
   myHeaders.append("Authorization", `Bearer ${key}`);
-  // myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
   myHeaders.append("Content-Type", "application/json");
 
   const raw = JSON.stringify({
     model: modelId,
     messages: messages,
+    stream: true,
   });
 
   const requestOptions: RequestInit = {
@@ -25,14 +26,11 @@ export default defineEventHandler(async (event) => {
   };
 
   try {
-    const response = await fetch("https://api.tutujin.com/v1/chat/completions", requestOptions);
-    const result = await response.json();
-    return {
-      data: result,
-    };
+    const res = await fetch("https://api.tutujin.com/v1/chat/completions", requestOptions);
+    await event.respondWith(res);
+    return;
   } catch (error) {
     throw createError({
-      statusCode: 400,
       statusMessage: JSON.stringify(error),
     });
   }

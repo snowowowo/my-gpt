@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen text-green9 font-medium text-sm">
+  <div class="w-full h-full overflow-hidden">
     <NuxtPage />
   </div>
 </template>

@@ -10,7 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@vueuse/nuxt": "^10.9.0",
+    "github-markdown-css": "^5.5.1",
+    "highlight.js": "^11.9.0",
+    "marked": "^12.0.1",
+    "marked-highlight": "^2.1.1",
+    "nanoid": "^5.0.7",
     "nuxt": "^3.11.2",
+    "radix-vue": "^1.7.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
