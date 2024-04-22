@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  console.log("%c [ body ]-3", "font-size:13px; background:pink; color:#bf2c9f;", body);
+  // console.log("%c [ body ]-3", "font-size:13px; background:pink; color:#bf2c9f;", body);
   const modelId = body.modelId;
   const messages = body.messages;
 
@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
   const raw = JSON.stringify({
     model: modelId,
     messages: messages,
+    // stream: false,
     stream: true,
   });
 
@@ -28,7 +29,11 @@ export default defineEventHandler(async (event) => {
   try {
     const res = await fetch("https://api.tutujin.com/v1/chat/completions", requestOptions);
     await event.respondWith(res);
-    return;
+
+    // no stream
+    // const result = await res.json();
+    // console.log("%c [ result ]-22", "font-size:13px; background:pink; color:#bf2c9f;", result);
+    // return result;
   } catch (error) {
     throw createError({
       statusMessage: JSON.stringify(error),

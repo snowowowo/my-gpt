@@ -23,6 +23,14 @@ html, body, #__nuxt {
   background: rgba(0, 0, 0, 0.4);
 }
 
+.markdown-body ::-webkit-scrollbar-thumb {
+    background: rgba(189, 189, 189, 0.333);
+}
+
+.markdown-body ::-webkit-scrollbar-thumb:hover {
+    background: rgba(223, 223, 223, 0.333);
+}
+
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
@@ -37,6 +45,7 @@ html, body, #__nuxt {
 .markdown-body code {
     border-radius: 8px;
     margin: 20px 0;
+    overflow: hidden;
 }
 
 .markdown-body p {
@@ -45,4 +54,8 @@ html, body, #__nuxt {
 .markdown-body p img {
     border-radius: 8px;
     width: 200px;
+}
+.markdown-body a {
+    color: #007bff;
+    text-decoration: none;
 }
