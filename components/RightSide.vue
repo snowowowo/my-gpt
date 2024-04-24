@@ -7,7 +7,6 @@ const uiStore = useUiStore();
 const { chats, currentChatId, currentChat } = storeToRefs(chatStore);
 const { showSidebar } = storeToRefs(uiStore);
 
-const modelList = ref<string[]>(["gpt-3.5-turbo", "gpt-3.5-turbo-1106", "gpt-4", "gpt-4-all", "gemini-pro"]);
 const showNavbar = ref(true);
 let lastScrollTop = 0;
 const indexInputText = ref<string>("");
@@ -17,50 +16,38 @@ const handleScroll = (e: Event) => {
   showNavbar.value = currentScrollTop < lastScrollTop || currentScrollTop <= 0;
   lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
 };
-
-function handleSelectMedel(e: Event) {}
 </script>
 
 <template>
   <div
-    class="h-full bg-white overflow-hidden relative transition-all"
+    class="relative h-full overflow-hidden transition-all bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-100"
     :class="showSidebar ? 'w-full md:w-[calc(100%_-_320px)]' : 'w-full'"
   >
     <!-- navbar -->
-    <div
-      class="w-full h-14 px-4 border-b absolute bg-white top-0 left-0 flex justify-start items-center text-slate-700"
-      v-show="showNavbar"
-    >
-      <div
-        v-if="!showSidebar"
-        class="w-10 h-10 rounded-2xl bg-gray-500/10 hover:bg-gray-400/20 cursor-pointer flex justify-center items-center"
-        @click="uiStore.toggleSidebar()"
-      >
-        =
-      </div>
-      <DropdownMenu> Medel </DropdownMenu>
-      <!-- <select class="rounded-xl px-2 py-2 outline-none" :value="currentChat?.modelId" @change="handleSelectMedel">
-        <option v-for="item in modelList" :value="item" class="h-10 outline-none border-none">{{ item }}</option>
-      </select> -->
-    </div>
-    <div class="w-full h-full flex flex-col mx-auto">
+    <RightSideNav :showNavbar="showNavbar"></RightSideNav>
+    <!-- main -->
+    <div class="flex flex-col w-full h-full mx-auto">
       <!-- chat history -->
-      <div class="w-full overflow-hidden">
+      <div v-if="currentChatId" class="w-full overflow-hidden">
         <div class="w-full h-full overflow-y-scroll py-14 scroll-smooth" @scroll="handleScroll">
           <div class="min-w-[376px] md:w-4/5 mx-auto p-6 overflow-hidden">
-            <div v-for="item in currentChat?.messages" class="w-full box-border mb-4">
+            <div v-for="item in currentChat?.messages" class="box-border w-full mb-4">
               <!-- avatar -->
-              <div class="flex flex-row justify-start items-center py-2 gap-x-2 mb-2">
-                <div class="w-8 h-8 rounded-full bg-green-500 leading-8 text-center text-lg text-white">
+              <div class="flex flex-row items-center justify-start py-2 mb-2 gap-x-2">
+                <div class="w-8 h-8 text-lg leading-8 text-center text-white bg-green-500 rounded-full">
                   {{ item.role.slice(0, 1).toUpperCase() }}
                 </div>
-                <div class="text-lg font-bold text-gray-700">{{ item.role }}</div>
+                <div class="text-lg font-bold text-gray-700 dark:text-slate-400">{{ item.role }}</div>
               </div>
               <!-- content -->
-              <MarkedContent :content="item.content" class="markdown-body"></MarkedContent>
+              <MarkedContent :content="item.content" class="markdown-body dark:text-slate-400"></MarkedContent>
             </div>
           </div>
         </div>
+      </div>
+      <div v-else class="flex items-center justify-center w-full h-full overflow-hidden">
+        <div>预设</div>
+        <div>预设</div>
       </div>
       <!-- input -->
       <InputArea></InputArea>
