@@ -11,5 +11,6 @@ export interface Chat {
   name: string;
   modelId: string;
   messages: Message[];
-  inputText: string;
+  // inputText: string;
+  generating: boolean;
 }

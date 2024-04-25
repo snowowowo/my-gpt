@@ -47,6 +47,10 @@ function onShiftEnter(e: KeyboardEvent) {
     handleSendMessage();
   }
 }
+
+function handleStopGenerating() {
+  chatStore.updateChat(currentChatId.value, { generating: false });
+}
 </script>
 
 <template>
@@ -73,7 +77,21 @@ function onShiftEnter(e: KeyboardEvent) {
         v-model="inputText"
         @keyup.ctrl.enter="onShiftEnter"></textarea>
 
+      <!-- stop button -->
       <div
+        v-if="currentChat?.generating"
+        class="flex justify-center items-center absolute right-2 bottom-2 gap-x-2">
+        <div
+          class="flex items-center justify-center w-8 h-8 p-2 text-white rounded-lg cursor-pointer dark:hover:bg-slate-600 hover:bg-slate-200"
+          @click="handleStopGenerating">
+          <Icon
+            name="carbon:stop-filled-alt"
+            class="text-slate-500 dark:text-slate-400" />
+        </div>
+      </div>
+      <!-- send button -->
+      <div
+        v-else
         class="flex justify-center items-center absolute right-2 bottom-2 gap-x-2">
         <div class="text-[12px] text-slate-400">Ctrl + Enter</div>
         <div

@@ -10,7 +10,8 @@ const { showSidebar } = storeToRefs(uiStore);
 const { chats } = storeToRefs(chatStore);
 
 function handleAddNewChat() {
-  chatStore.addNewChat();
+  const newChatId = chatStore.addNewChat();
+  chatStore.setCurrentChatId(newChatId);
 }
 
 </script>

@@ -2,8 +2,7 @@ import type { Chat } from "@/types/chat";
 import { getContent } from "@/utils/index";
 import { nanoid } from "nanoid";
 import { defineStore, createPinia, skipHydrate } from "pinia";
-import { useLocalStorage } from "@vueuse/core";
-import { use } from "marked";
+import { get, useLocalStorage } from "@vueuse/core";
 
 // 你可以任意命名 `defineStore()` 的返回值，但最好使用 store 的名字，同时以 `use` 开头且以 `Store` 结尾。
 // (比如 `useUserStore`，`useCartStore`，`useProductStore`)
@@ -28,7 +27,8 @@ export const useChatStore = defineStore("chats", () => {
       name: "new chat",
       modelId,
       messages: [],
-      inputText: "",
+      // inputText: "",
+      generating: false,
     };
     chats.value.push(newChat);
     return chatId;
@@ -63,7 +63,7 @@ export const useChatStore = defineStore("chats", () => {
         content: message,
         date: new Date().toISOString(),
       });
-      chat.inputText = "";
+      // chat.inputText = "";
       const historyMessages = chat.messages.map((message) => ({
         role: message.role,
         content: message.content,
@@ -75,6 +75,8 @@ export const useChatStore = defineStore("chats", () => {
         date: new Date().toISOString(),
       };
       chat.messages.push(newMessage);
+      // 将 genarating 设置为 true，表示正在生成中
+      chat.generating = true;
       // 调用后端接口
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -89,7 +91,7 @@ export const useChatStore = defineStore("chats", () => {
       const reader = response.body?.getReader();
       if (reader) {
         const decoder = new TextDecoder();
-        while (true) {
+        while (chat.generating) {
           const { done, value } = await reader.read();
           if (done) {
             break;
@@ -97,6 +99,7 @@ export const useChatStore = defineStore("chats", () => {
           const { text } = getContent(decoder.decode(value));
           chat.messages[chat.messages.length - 1].content += text;
         }
+        chat.generating = false;
       }
     }
   }
