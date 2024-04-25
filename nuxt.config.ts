@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  routeRules: {
+    "/": { ssr: false },
+  },
   runtimeConfig: {
     tutujinKey: "sk-U7F370scao3KdM5DEb9fC408931f4651Ac49E2F579B9Ad84",
   },
@@ -8,10 +11,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
     "nuxt-icon",
-    "shadcn-nuxt",
     "@nuxtjs/tailwindcss",
-    "radix-vue/nuxt",
-    "@pinia-plugin-persistedstate/nuxt",
   ],
   devtools: { enabled: false },
   css: ["@/assets/css/main.css", "@/assets/css/global.css"],
@@ -40,7 +40,6 @@ export default defineNuxtConfig({
   components: [
     // ~/user-module/components/account/UserDeleteDialog.vue => <UserDeleteDialog />
     { path: "~/components/widgets", pathPrefix: false },
-    { path: "~/components/ui", pathPrefix: false },
     // It's important that this comes last if you have overrides you wish to apply
     // to sub-directories of `~/components`.
     //
@@ -48,15 +47,4 @@ export default defineNuxtConfig({
     // ~/components/base/Btn.vue => <BaseBtn />
     "~/components",
   ],
-  shadcn: {
-    /**
-     * Prefix for all the imported component
-     */
-    prefix: "",
-    /**
-     * Directory that the component lives in.
-     * @default "./components/ui"
-     */
-    componentDir: "./components/ui",
-  },
 });

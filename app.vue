@@ -1,15 +1,9 @@
-<script setup lang="ts">
-import { ConfigProvider } from "radix-vue";
-
-const useIdFunction = () => useId();
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <ConfigProvider :use-id="useIdFunction">
-    <div class="w-full h-full overflow-hidden">
-      <NuxtPage />
-    </div>
-  </ConfigProvider>
+  <div class="w-full h-full overflow-hidden">
+    <NuxtPage />
+  </div>
 </template>
 
 <style scoped></style>

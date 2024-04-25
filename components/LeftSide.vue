@@ -7,18 +7,19 @@ import clsx from "clsx";
 const chatStore = useChatStore();
 const uiStore = useUiStore();
 const { showSidebar } = storeToRefs(uiStore);
-const { chats, currentChatId } = storeToRefs(chatStore);
+const { chats } = storeToRefs(chatStore);
 
 function handleAddNewChat() {
   chatStore.addNewChat();
 }
+
 </script>
 <template>
   <div
     :class="
       clsx(
-        'h-full w-[320px] absolute top-0 z-30 flex flex-col justify-start items-center transition-all overflow-hidden border-r',
-        'bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-100 dark:border-slate-700',
+        'left-side h-full w-[320px] absolute top-0 z-30 flex flex-col justify-start items-center transition-all overflow-hidden border-r',
+        'bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400 dark:border-slate-700',
         showSidebar ? 'left-0' : '-left-[330px]'
       )
     ">
@@ -27,7 +28,11 @@ function handleAddNewChat() {
       <!-- top bar -->
       <div
         class="sticky top-0 flex items-center justify-between w-full px-4 transition backdrop-blur-sm h-14 min-h-14 gap-x-4 bg-gray-100/80 dark:bg-slate-800/80">
-        <div @click="chatStore.setCurrentChatId('')" class="font-bold">CatGPT</div>
+        <div
+          @click="chatStore.setCurrentChatId('')"
+          class="font-bold cursor-pointer">
+          CatGPT
+        </div>
         <div class="flex items-center justify-start gap-x-4">
           <div
             class="flex items-center justify-center w-10 h-10 cursor-pointer rounded-xl hover:bg-gray-400/20"
@@ -36,7 +41,7 @@ function handleAddNewChat() {
           </div>
           <div
             class="flex items-center justify-center w-10 h-10 cursor-pointer rounded-xl hover:bg-gray-400/20"
-            @click="uiStore.toggleSidebar()">
+            @click="uiStore.toggleSidebar(false)">
             <Icon name="system-uicons:push-left" />
           </div>
         </div>
@@ -60,4 +65,5 @@ function handleAddNewChat() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

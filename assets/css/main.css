@@ -4,6 +4,11 @@ html, body, #__nuxt {
     overflow: hidden;
 }
 
+body {
+    font-family: 'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-size: 14px;
+}
+
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
   width: 6px;

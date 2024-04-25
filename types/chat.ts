@@ -1,6 +1,9 @@
 export interface Message {
     role: string;
     content: string;
+
+    modelId?: string;
+    date: string;
 }
 
 export interface Chat {

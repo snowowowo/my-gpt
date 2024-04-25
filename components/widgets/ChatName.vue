@@ -1,31 +1,15 @@
 <script setup lang="ts">
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import type { Chat } from "@/types/chat";
 import { useChatStore } from "@/stores/chats";
 const chatStore = useChatStore();
-const { currentChatId } = storeToRefs(chatStore);
+const { chats, currentChatId, currentChat } = storeToRefs(chatStore);
 const props = defineProps<{
   chat: Chat;
 }>();
 
-const inputText = ref<string>(props.chat.name);
+const chatName = computed(() => {
+  return chats.value.find((c) => c.id === props.chat.id)?.name;
+});
 const input = ref<HTMLInputElement | null>(null);
 const onEditChatName = ref(false);
 
@@ -33,7 +17,7 @@ function handleDeleteChat() {
   chatStore.deleteChat(props.chat.id);
 }
 
-function handleOnEditMode() {
+function handleTurnOnEditMode() {
   onEditChatName.value = true;
   nextTick(() => {
     if (input.value) {
@@ -42,9 +26,9 @@ function handleOnEditMode() {
   });
 }
 
-function handleUpdateChatName() {
-  chatStore.updateChat(props.chat.id, { name: inputText.value });
-  // onEditChatName.value = false;
+function handleUpdateChatName(e: Event) {
+  const target = e.target as HTMLInputElement;
+  chatStore.updateChat(props.chat.id, { name: target?.value });
 }
 </script>
 
@@ -59,18 +43,28 @@ function handleUpdateChatName() {
     <input
       v-if="onEditChatName"
       class="bg-transparent outline-none"
-      v-model="inputText"
+      :value="chatName"
       ref="input"
-      @input="handleUpdateChatName" />
+      @input="handleUpdateChatName"
+      @blur="onEditChatName = false" />
     <div v-else>{{ chat.name }}</div>
+
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <template #trigger>
         <Icon name="solar:menu-dots-bold" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent :hideWhenDetached="false">
-        <DropdownMenuItem @click="handleDeleteChat">删除</DropdownMenuItem>
-        <DropdownMenuItem @click="handleOnEditMode">重命名</DropdownMenuItem>
-      </DropdownMenuContent>
+      </template>
+      <template #content>
+        <div
+          @click="handleDeleteChat"
+          class="w-full text-center px-4 py-1 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-600 cursor-pointer">
+          删除
+        </div>
+        <div
+          @click="handleTurnOnEditMode"
+          class="w-full text-center px-4 py-1 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-600 cursor-pointer">
+          重命名
+        </div>
+      </template>
     </DropdownMenu>
   </div>
 </template>
