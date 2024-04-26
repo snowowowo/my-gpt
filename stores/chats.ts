@@ -94,15 +94,18 @@ export const useChatStore = defineStore("chats", () => {
           const decoder = new TextDecoder();
           while (chat.generating) {
             const { done, value } = await reader.read();
-            console.log('%c [ value ]-97', 'font-size:13px; background:pink; color:#bf2c9f;', value)
             if (done) {
               chat.generating = false;
-              console.log("%c [ done ]", done);
-              console.log("%c [ done ]", done + "");
-              break;
+              console.log("[ done ]", done, "[ done ]");
+            } else {
+              const { text } = getContent(decoder.decode(value));
+              console.log(
+                "%c [ text ]-105",
+                "font-size:13px; background:pink; color:#bf2c9f;",
+                text
+              );
+              chat.messages[chat.messages.length - 1].content += text;
             }
-            const { text } = getContent(decoder.decode(value));
-            chat.messages[chat.messages.length - 1].content += text;
           }
         }
       } catch (error) {
