@@ -85,7 +85,7 @@ export const useChatStore = defineStore("chats", () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            modelId: chat.modelId,
+            model: chat.modelId,
             messages: historyMessages,
           }),
         });
@@ -105,7 +105,7 @@ export const useChatStore = defineStore("chats", () => {
                 "font-size:13px; background:pink; color:#bf2c9f;",
                 text
               );
-              // chat.messages[chat.messages.length - 1].content += text;
+              chat.messages[chat.messages.length - 1].content += text;
             }
           }
         }

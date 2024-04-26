@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   // console.log("%c [ body ]-3", "font-size:13px; background:pink; color:#bf2c9f;", body);
-  const modelId = body.modelId;
+  const model = body.model;
   const messages = body.messages;
 
   const config = useRuntimeConfig(event);
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   myHeaders.append("Content-Type", "application/json");
 
   const raw = JSON.stringify({
-    model: modelId,
+    model: model,
     messages: messages,
     // stream: false,
     stream: true,
