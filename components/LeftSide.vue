@@ -32,7 +32,7 @@ function handleAddNewChat() {
         <div
           @click="chatStore.setCurrentChatId('')"
           class="font-bold cursor-pointer">
-          CatGPT
+          MyGPT
         </div>
         <div class="flex items-center justify-start gap-x-4">
           <div

@@ -95,12 +95,12 @@ export const useChatStore = defineStore("chats", () => {
           while (chat.generating) {
             const { done, value } = await reader.read();
             if (done) {
+              chat.generating = false;
               break;
             }
             const { text } = getContent(decoder.decode(value));
             chat.messages[chat.messages.length - 1].content += text;
           }
-          chat.generating = false;
         }
       } catch (error) {
         console.error(error);
