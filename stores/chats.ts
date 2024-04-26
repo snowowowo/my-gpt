@@ -94,6 +94,7 @@ export const useChatStore = defineStore("chats", () => {
           const decoder = new TextDecoder();
           while (chat.generating) {
             const { done, value } = await reader.read();
+            console.log('%c [  ]-98', 'font-size:13px; background:pink; color:#bf2c9f;', decoder.decode(value))
             if (done) {
               chat.generating = false;
               console.log("[ done ]", done, "[ done ]");
