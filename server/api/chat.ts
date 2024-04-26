@@ -28,7 +28,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     const res = await fetch("https://api.tutujin.com/v1/chat/completions", requestOptions);
-    await event.respondWith(res);
+    // await event.respondWith(res);
+    return res;
 
     // no stream
     // const result = await res.json();
