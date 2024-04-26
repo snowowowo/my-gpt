@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Chat } from "@/types/chat";
+import { getModelNameByModelId } from "@/utils/index";
 import { useChatStore } from "@/stores/chats";
 import { useUiStore } from "@/stores/ui";
 
@@ -31,7 +32,7 @@ const showNavbar = ref(true);
               class="box-border w-full mb-6">
               <!-- avatar -->
               <div
-                class="flex flex-row items-center justify-start py-2 mb-2 gap-x-2">
+                class="flex flex-row items-center justify-start py-2 mb-2 gap-x-4">
                 <div
                   v-if="item.role === 'user'"
                   class="w-8 h-8 flex justify-center items-center rounded-full border">
@@ -43,20 +44,20 @@ const showNavbar = ref(true);
                   <Icon name="fluent:bot-20-regular" class="text-white" />
                 </div>
                 <div
-                  class="text-lg text-gray-600 dark:text-slate-300 flex justify-start items-center">
-                  <div>{{ item.role }}</div>
+                  class="text-lg text-gray-800 dark:text-slate-300 flex justify-start items-center">
+                  <div>{{ item.role === "user" ? 'You' : 'AI' }}</div>
                   <div
                     v-if="item.role === 'assistant' && item.modelId"
-                    class="ml-2 text-gray-300 dark:text-gray-600 flex justify-start items-center">
-                    <Icon name="mdi:dot" />
-                    {{ item.modelId }}
+                    class="ml-2 text-gray-400 dark:text-gray-600 flex justify-start items-center">
+                    <Icon name="mdi:dot" class="mr-1 h-8 w-8" />
+                    {{ getModelNameByModelId(item.modelId) }}
                   </div>
                 </div>
               </div>
               <!-- content -->
               <MarkedContent
                 :content="item.content"
-                class="markdown-body dark:text-slate-400 pl-10"></MarkedContent>
+                class="markdown-body dark:text-slate-400 pl-12"></MarkedContent>
             </div>
           </div>
         </div>

@@ -1,32 +1,32 @@
 // 处理多个数据段连在一起的数据
-export const handleChunkText = (chunkText: string) => {
-  // console.log('%c [ data ]-9', 'font-size:13px; background:pink; color:#bf2c9f;', data)
-  if (!chunkText) return;
-  // 根据换行符分割数据段
-  const dataSegments = chunkText.split("\n");
-  const textContents = dataSegments.map((segment) => {
-    // 对每个数据段提取文本内容
-    if (!segment.includes('"content":"')) return;
-    const parts = segment.split('"content":"');
-    // console.log('%c [ parts ]-13', 'font-size:13px; background:pink; color:#bf2c9f;', parts)
-    if (!parts[0] || !parts) return;
-    const textPart = parts[1];
-    const endIndex = textPart.indexOf('"}');
-    return textPart.substring(0, endIndex);
-  });
+// export const handleChunkText = (chunkText: string) => {
+//   // console.log('%c [ data ]-9', 'font-size:13px; background:pink; color:#bf2c9f;', data)
+//   if (!chunkText) return;
+//   // 根据换行符分割数据段
+//   const dataSegments = chunkText.split("\n");
+//   const textContents = dataSegments.map((segment) => {
+//     // 对每个数据段提取文本内容
+//     if (!segment.includes('"content":"')) return;
+//     const parts = segment.split('"content":"');
+//     // console.log('%c [ parts ]-13', 'font-size:13px; background:pink; color:#bf2c9f;', parts)
+//     if (!parts[0] || !parts) return;
+//     const textPart = parts[1];
+//     const endIndex = textPart.indexOf('"}');
+//     return textPart.substring(0, endIndex);
+//   });
 
-  // 把特殊字符转义回来
-  textContents.forEach((text, index) => {
-    textContents[index] = text
-      ?.replace(/\\n/g, "\n")
-      .replace(/\\t/g, "\t")
-      .replace(/\\r/g, "\r")
-      .replace(/\\"/g, '"')
-      .replace(/\\u003c/g, "<")
-      .replace(/\\u003e/g, ">");
-  });
-  return textContents.join("");
-};
+//   // 把特殊字符转义回来
+//   textContents.forEach((text, index) => {
+//     textContents[index] = text
+//       ?.replace(/\\n/g, "\n")
+//       .replace(/\\t/g, "\t")
+//       .replace(/\\r/g, "\r")
+//       .replace(/\\"/g, '"')
+//       .replace(/\\u003c/g, "<")
+//       .replace(/\\u003e/g, ">");
+//   });
+//   return textContents.join("");
+// };
 
 interface ParsedData {
   text: string;
@@ -94,12 +94,14 @@ function escapeSpecialChars(text: string): string {
   return text;
 }
 
-// // 示例用法
-// const inputString = `data: {"id":"chatcmpl-9GL88uJQXjAx1Ai2OBAHvyBoCcgjV","object":"","created":1713681501,"model":"gpt-4","choices":[{"index":0,"delta":{"content":"","role":"assistant"},"finish_reason":null}]}
-// data: {"id":"chatcmpl-9GL88uJQXjAx1Ai2OBAHvyBoCcgjV","object":"chat.completion.chunk","created":1713681500,"model":"gpt-4","choices":[{"index":0,"delta":{"content":"","role":"assistant"},"finish_reason":null}]}
-// data: {"id":"chatcmpl-9GL88uJQXjAx1Ai2OBAHvyBoCcgjV","object":"chat.completion.chunk","created":1713681500,"model":"gpt-4","choices":[{"index":0,"delta":{"content":"很"},"finish_reason":null}]}
-// data: {"id":"chatcmpl-9GL88uJQXjAx1Ai2OBAHvyBoCcgjV","object":"chat.completion.chunk","created":1713681500,"model":"gpt-4","choices":[{"index":0,"delta":{"content":"抱"},"finish_reason":null}]}
-// data: [DONE]`;
+export function getModelNameByModelId(modelId: string) {
+  const modelMap = new Map<string, string>([
+    ["gpt-3.5-turbo", "GPT-3.5 Turbo"],
+    ["gpt-3.5-turbo-1106", "GPT-3.5 Turbo 1106"],
+    ["gpt-4", "GPT-4"],
+    ["gpt-4-all", "GPT-4 All"],
+    ["gemini-pro", "Gemini Pro"],
+  ]);
 
-// console.log(parseData(inputString));
-// // 输出: { text: '很抱', done: true }
+  return modelMap.get(modelId) || "Unknown Model";
+}

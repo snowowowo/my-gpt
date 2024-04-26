@@ -78,27 +78,33 @@ export const useChatStore = defineStore("chats", () => {
       // 将 genarating 设置为 true，表示正在生成中
       chat.generating = true;
       // 调用后端接口
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          modelId: chat.modelId,
-          messages: historyMessages,
-        }),
-      });
-      const reader = response.body?.getReader();
-      if (reader) {
-        const decoder = new TextDecoder();
-        while (chat.generating) {
-          const { done, value } = await reader.read();
-          if (done) {
-            break;
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            modelId: chat.modelId,
+            messages: historyMessages,
+          }),
+        });
+        const reader = response.body?.getReader();
+        if (reader) {
+          const decoder = new TextDecoder();
+          while (chat.generating) {
+            const { done, value } = await reader.read();
+            if (done) {
+              break;
+            }
+            const { text } = getContent(decoder.decode(value));
+            chat.messages[chat.messages.length - 1].content += text;
           }
-          const { text } = getContent(decoder.decode(value));
-          chat.messages[chat.messages.length - 1].content += text;
+          chat.generating = false;
         }
+      } catch (error) {
+        console.error(error);
+        chat.messages.pop();
         chat.generating = false;
       }
     }
