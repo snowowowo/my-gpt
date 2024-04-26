@@ -96,6 +96,7 @@ export const useChatStore = defineStore("chats", () => {
             const { done, value } = await reader.read();
             if (done) {
               chat.generating = false;
+              console.log("%c [ done ]", done);
               break;
             }
             const { text } = getContent(decoder.decode(value));
@@ -103,7 +104,7 @@ export const useChatStore = defineStore("chats", () => {
           }
         }
       } catch (error) {
-        console.error(error);
+        console.log("%c [ error ]", error);
         chat.messages.pop();
         chat.generating = false;
       }

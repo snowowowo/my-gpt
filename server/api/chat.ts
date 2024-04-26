@@ -36,6 +36,7 @@ export default defineEventHandler(async (event) => {
     // return result;
   } catch (error) {
     throw createError({
+      status: 500,
       statusMessage: JSON.stringify(error),
     });
   }
