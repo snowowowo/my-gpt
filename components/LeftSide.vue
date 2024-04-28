@@ -4,6 +4,9 @@ import type { Chat } from "@/types/chat";
 import { useChatStore } from "@/stores/chats";
 import { useUiStore } from "@/stores/ui";
 import clsx from "clsx";
+
+
+
 const chatStore = useChatStore();
 const uiStore = useUiStore();
 const { showSidebar } = storeToRefs(uiStore);
