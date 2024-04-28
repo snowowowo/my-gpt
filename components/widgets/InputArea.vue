@@ -9,8 +9,6 @@ watch(inputText, () => {
   resizeTextarea();
 });
 
-onMounted(() => {});
-
 function resizeTextarea() {
   const textarea = textareaRef.value as HTMLTextAreaElement;
   textarea.style.height = "auto";
@@ -18,7 +16,7 @@ function resizeTextarea() {
     textarea.style.height = `${textarea.scrollHeight}px`;
   }
   // 限制最大高度
-  if (textarea.scrollHeight > 300) {
+  if (textarea.scrollHeight > 300 && inputText.value.length > 0) {
     textarea.style.height = "300px";
     textarea.style.overflowY = "auto";
   }
