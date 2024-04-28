@@ -14,4 +14,6 @@ export interface Chat {
   // inputText: string;
   // generating: boolean;
   status: "generating" | "error" | "finished" | "idle";
+  // 上下文长度
+  contextLength: number;
 }

@@ -11,8 +11,8 @@ const { showSidebar } = storeToRefs(uiStore);
 const showNavbar = ref(true);
 
 function handleRetry() {
-  const messages = currentChat.value?.messages.slice(0, -1) || [];
-  chatStore.sendMessage(currentChatId.value, messages);
+  // const messages = currentChat.value?.messages.slice(0, -1) || [];
+  chatStore.sendMessage(currentChatId.value);
 }
 </script>
 

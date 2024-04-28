@@ -35,9 +35,9 @@ async function handleSendMessage() {
 
   inputText.value = "";
   chatStore.addUserMessage(chatId, message);
-  const messages = currentChat.value?.messages || [];
   chatStore.addAssistantMessage(chatId);
-  await chatStore.sendMessage(chatId, messages);
+  // const messages = currentChat.value?.messages.slice(0, ) || [];
+  await chatStore.sendMessage(chatId);
 }
 
 function onShiftEnter(e: KeyboardEvent) {

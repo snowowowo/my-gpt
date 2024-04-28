@@ -30,6 +30,7 @@ export const useChatStore = defineStore("chats", () => {
       // inputText: "",
       // generating: false,
       status: "idle",
+      contextLength: 10,
     };
     chats.value.push(newChat);
     return chatId;
@@ -73,29 +74,34 @@ export const useChatStore = defineStore("chats", () => {
     }
   }
 
-  async function sendMessage(chatId: string, messages: Message[]) {
+  async function sendMessage(chatId: string) {
     const chat = chats.value.find((chat) => chat.id === chatId);
 
-    const isFirstMessage = chat?.messages.length === 0;
+    const isFirstMessage = chat?.messages.length === 2;
     if (isFirstMessage) {
-      updateChat(chatId, { name: messages[0].content.slice(0, 20) });
+      updateChat(chatId, { name: chat.messages[0].content.slice(0, 20) });
     }
 
     // 如果上一条消息是错误消息，清空上一条消息
-    if(chat?.status === "error") {
+    if (chat?.status === "error") {
       chat.messages[chat.messages.length - 1].content = "";
     }
 
     if (chat) {
-      const historyMessages = messages.map((message) => ({
-        role: message.role,
-        content: message.content,
-      }));
+      // console.log('%c [ chat ]-91', 'font-size:13px; background:pink; color:#bf2c9f;', chat.messages)
+      
+      // 根据 contextLength 获取上下文
+      const historyMessages = chat.messages
+        .slice(0, chat.messages.length - 1)
+        .slice(-chat.contextLength)
+        .map((message) => ({
+          role: message.role,
+          content: message.content,
+        }));
       chat.status = "generating";
 
       // 调用后端接口
       try {
-
         const response = await fetch("/api/chat", {
           method: "POST",
           headers: {

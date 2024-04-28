@@ -3,6 +3,7 @@ export default defineEventHandler(async (event) => {
   // console.log("%c [ body ]-3", "font-size:13px; background:pink; color:#bf2c9f;", body);
   const modelId = body.model;
   const messages = body.messages;
+  console.log('%c [ messages ]-6', 'font-size:13px; background:pink; color:#bf2c9f;', messages)
 
   const config = useRuntimeConfig(event);
   const key = config.tutujinKey;
@@ -33,11 +34,11 @@ export default defineEventHandler(async (event) => {
     );
     // await event.respondWith(res);
 
-    console.log(
-      "%c [ res ]-33",
-      "font-size:13px; background:pink; color:#bf2c9f;",
-      res
-    );
+    // console.log(
+    //   "%c [ res ]-33",
+    //   "font-size:13px; background:pink; color:#bf2c9f;",
+    //   res
+    // );
     return res;
 
     // no stream
