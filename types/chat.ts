@@ -12,5 +12,6 @@ export interface Chat {
   modelId: string;
   messages: Message[];
   // inputText: string;
-  generating: boolean;
+  // generating: boolean;
+  status: "generating" | "error" | "finished" | "idle";
 }

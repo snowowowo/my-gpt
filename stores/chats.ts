@@ -1,4 +1,4 @@
-import type { Chat } from "@/types/chat";
+import type { Chat, Message } from "@/types/chat";
 import { getContent } from "@/utils/index";
 import { nanoid } from "nanoid";
 import { defineStore, createPinia, skipHydrate } from "pinia";
@@ -28,7 +28,8 @@ export const useChatStore = defineStore("chats", () => {
       modelId,
       messages: [],
       // inputText: "",
-      generating: false,
+      // generating: false,
+      status: "idle",
     };
     chats.value.push(newChat);
     return chatId;
@@ -49,36 +50,52 @@ export const useChatStore = defineStore("chats", () => {
     noChatModelId.value = modelId;
   }
 
-  async function sendMessage(chatId: string, message: string) {
+  // 添加消息
+  function addUserMessage(chatId: string, message: string) {
     const chat = chats.value.find((chat) => chat.id === chatId);
-
-    const isFirstMessage = chat?.messages.length === 0;
-    if (isFirstMessage) {
-      updateChat(chatId, { name: message.slice(0, 20) });
-    }
-
     if (chat) {
       chat.messages.push({
         role: "user",
         content: message,
         date: new Date().toISOString(),
       });
-      // chat.inputText = "";
-      const historyMessages = chat.messages.map((message) => ({
+    }
+  }
+
+  function addAssistantMessage(chatId: string) {
+    const chat = chats.value.find((chat) => chat.id === chatId);
+    if (chat) {
+      chat.messages.push({
+        role: "assistant",
+        content: "",
+        date: new Date().toISOString(),
+      });
+    }
+  }
+
+  async function sendMessage(chatId: string, messages: Message[]) {
+    const chat = chats.value.find((chat) => chat.id === chatId);
+
+    const isFirstMessage = chat?.messages.length === 0;
+    if (isFirstMessage) {
+      updateChat(chatId, { name: messages[0].content.slice(0, 20) });
+    }
+
+    // 如果上一条消息是错误消息，清空上一条消息
+    if(chat?.status === "error") {
+      chat.messages[chat.messages.length - 1].content = "";
+    }
+
+    if (chat) {
+      const historyMessages = messages.map((message) => ({
         role: message.role,
         content: message.content,
       }));
-      const newMessage = {
-        role: "assistant",
-        content: "",
-        modelId: chat.modelId,
-        date: new Date().toISOString(),
-      };
-      chat.messages.push(newMessage);
-      // 将 genarating 设置为 true，表示正在生成中
-      chat.generating = true;
+      chat.status = "generating";
+
       // 调用后端接口
       try {
+
         const response = await fetch("/api/chat", {
           method: "POST",
           headers: {
@@ -89,30 +106,27 @@ export const useChatStore = defineStore("chats", () => {
             messages: historyMessages,
           }),
         });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
         const reader = response.body?.getReader();
         if (reader) {
           const decoder = new TextDecoder();
-          while (chat.generating) {
+          while (chat.status === "generating") {
             const { done, value } = await reader.read();
-            console.log('%c [  ]-98', 'font-size:13px; background:pink; color:#bf2c9f;', decoder.decode(value))
             if (done) {
-              chat.generating = false;
-              console.log("[ done ]", done, "[ done ]");
+              chat.status = "finished";
             } else {
               const { text } = getContent(decoder.decode(value));
-              console.log(
-                "%c [ text ]-105",
-                "font-size:13px; background:pink; color:#bf2c9f;",
-                text
-              );
               chat.messages[chat.messages.length - 1].content += text;
             }
           }
         }
       } catch (error) {
-        console.log("%c [ error ]", error);
-        chat.messages.pop();
-        chat.generating = false;
+        console.log("[ error ]", error);
+        chat.status = "error";
       }
     }
   }
@@ -127,6 +141,8 @@ export const useChatStore = defineStore("chats", () => {
     deleteChat,
     updateChat,
     setNoChatModelId,
+    addUserMessage,
+    addAssistantMessage,
     sendMessage,
   };
 });

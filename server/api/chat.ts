@@ -27,18 +27,32 @@ export default defineEventHandler(async (event) => {
   };
 
   try {
-    const res = await fetch("https://api.tutujin.com/v1/chat/completions", requestOptions);
+    const res = await fetch(
+      "https://api.tutujin.com/v1/chat/completions",
+      requestOptions
+    );
     // await event.respondWith(res);
+
+    console.log(
+      "%c [ res ]-33",
+      "font-size:13px; background:pink; color:#bf2c9f;",
+      res
+    );
     return res;
 
     // no stream
     // const result = await res.json();
     // console.log("%c [ result ]-22", "font-size:13px; background:pink; color:#bf2c9f;", result);
     // return result;
-  } catch (error) {
+  } catch (error: any) {
+    // console.log(
+    //   "%c [ error ]-40",
+    //   "font-size:13px; background:pink; color:#bf2c9f;",
+    //   error
+    // );
     throw createError({
-      status: 500,
-      statusMessage: JSON.stringify(error),
+      status: 400,
+      message: "An error occurred",
     });
   }
 });
