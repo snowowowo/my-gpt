@@ -56,7 +56,7 @@ function handleStopGenerating() {
   <div
     class="absolute w-10/12 md:w-4/5 left-1/2 -translate-x-1/2 z-20 flex justify-center overflow-hidden bottom-4">
     <div
-      class="min-w-[376px] w-full relative flex justify-center overflow-hidden rounded-xl border">
+      class="min-w-[240px] w-full relative flex justify-center overflow-hidden rounded-xl border">
       <!-- prompt framwork button -->
       <!-- <div
         class="flex justify-center items-center absolute left-2 bottom-[6px] gap-x-2">
