@@ -70,7 +70,7 @@ function handleStopGenerating() {
       </div> -->
       <!-- textarea -->
       <textarea
-        placeholder="Type something"
+        placeholder="请输入"
         rows="1"
         type="text"
         class="w-full p-4 py-3 overflow-hidden outline-none resize-none dark:bg-slate-800 dark:text-slate-200"

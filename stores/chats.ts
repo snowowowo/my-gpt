@@ -24,7 +24,7 @@ export const useChatStore = defineStore("chats", () => {
     const chatId = nanoid();
     const newChat: Chat = {
       id: chatId,
-      name: "new chat",
+      name: "新对话",
       modelId,
       messages: [],
       // inputText: "",

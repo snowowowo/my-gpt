@@ -140,7 +140,7 @@ function handleSetContextLength(contextLength: number) {
                 class="w-8 h-8 text-green-500 dark:text-green-700" />
             </div>
             <div class="flex flex-col justify-center items-start gap-y-1">
-              <div class="font-black">1</div>
+              <div class="font-black">上下文长度：1</div>
               <div class="text-xs w-60 text-gray-400text-wrap">
                 如过只需要让AI知道最新发给它的一条消息，设为1可节省token.
               </div>
@@ -156,7 +156,7 @@ function handleSetContextLength(contextLength: number) {
                 class="w-8 h-8 text-green-500 dark:text-green-700" />
             </div>
             <div class="flex flex-col justify-center items-start gap-y-1">
-              <div class="font-black">10</div>
+              <div class="font-black">上下文长度：10</div>
               <div class="text-xs w-60 text-gray-400text-wrap">
                 一般上下文长度越大，回答越好，消耗的token也越多，设为10可以让AI知道最近10条消息.
               </div>
