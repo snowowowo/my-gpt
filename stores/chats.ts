@@ -30,7 +30,7 @@ export const useChatStore = defineStore("chats", () => {
       // inputText: "",
       // generating: false,
       status: "idle",
-      contextLength: 10,
+      contextLength: 1,
     };
     chats.value.push(newChat);
     return chatId;
@@ -88,8 +88,6 @@ export const useChatStore = defineStore("chats", () => {
     }
 
     if (chat) {
-      // console.log('%c [ chat ]-91', 'font-size:13px; background:pink; color:#bf2c9f;', chat.messages)
-      
       // 根据 contextLength 获取上下文
       const historyMessages = chat.messages
         .slice(0, chat.messages.length - 1)
@@ -98,6 +96,8 @@ export const useChatStore = defineStore("chats", () => {
           role: message.role,
           content: message.content,
         }));
+
+        console.log('%c [ historyMessages ]-103', 'font-size:13px; background:pink; color:#bf2c9f;', historyMessages)
       chat.status = "generating";
 
       // 调用后端接口

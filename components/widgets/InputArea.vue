@@ -77,7 +77,6 @@ function handleStopGenerating() {
         ref="textareaRef"
         v-model="inputText"
         @keyup.ctrl.enter="onShiftEnter"></textarea>
-
       <!-- stop button -->
       <div
         v-if="currentChat?.status === 'generating'"
