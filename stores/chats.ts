@@ -8,7 +8,7 @@ import { get, useLocalStorage } from "@vueuse/core";
 // (比如 `useUserStore`，`useCartStore`，`useProductStore`)
 // 第一个参数是你的应用中 Store 的唯一 ID。
 export const useChatStore = defineStore("chats", () => {
-  const noChatModelId = ref("deepseek-chat");
+  const noChatModelId = ref("gpt-3.5-turbo");
   const currentChatId = ref(useLocalStorage("currentChatId", ""));
   const chats = ref<Ref<Chat[]>>(useLocalStorage("chats", []));
 
@@ -20,7 +20,7 @@ export const useChatStore = defineStore("chats", () => {
     currentChatId.value = chatId;
   }
 
-  function addNewChat(modelId: string = "deepseek-chat") {
+  function addNewChat(modelId: string = "gpt-3.5-turbo") {
     const chatId = nanoid();
     const newChat: Chat = {
       id: chatId,
@@ -30,7 +30,7 @@ export const useChatStore = defineStore("chats", () => {
       // inputText: "",
       // generating: false,
       status: "idle",
-      contextLength: 30,
+      contextLength: 1,
     };
     chats.value.push(newChat);
     return chatId;

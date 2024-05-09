@@ -5,12 +5,12 @@ export default defineEventHandler(async (event) => {
   const messages = body.messages;
   // console.log('%c [ messages ]-6', 'font-size:13px; background:pink; color:#bf2c9f;', messages)
 
-  const isDeepSeek = modelId.includes("deepseek");
+  // const isDeepSeek = modelId.includes("deepseek");
 
   // const config = useRuntimeConfig(event);
   // const key = config.tutujinKey;
-  const key = isDeepSeek ? process.env.DEEPSEEK_KEY : process.env.TUTUJIN_KEY;
-  const baseUrl = isDeepSeek ? "https://api.deepseek.com" : "https://api.tutujin.com";
+  const key = process.env.TUTUJIN_KEY;
+  const baseUrl = "https://api.tutujin.com";
 
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
@@ -28,14 +28,11 @@ export default defineEventHandler(async (event) => {
     method: "POST",
     headers: myHeaders,
     body: bodyData,
-    // redirect: "follow",
+    redirect: "follow",
   };
 
   try {
-    const res = await fetch(
-      `${baseUrl}/v1/chat/completions`,
-      requestOptions
-    );
+    const res = await fetch(`${baseUrl}/v1/chat/completions`, requestOptions);
     return res;
   } catch (error: any) {
     throw createError({

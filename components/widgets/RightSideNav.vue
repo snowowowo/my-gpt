@@ -18,16 +18,16 @@ const props = defineProps<{
 }>();
 
 const modelList = ref<Model[]>([
-  {
-    id: "deepseek-chat",
-    name: "DeepSeek Chat",
-    description: "DeepSeek Chat",
-  },
-  {
-    id: "deepseek-coder",
-    name: "DeepSeek Coder",
-    description: "DeepSeek Chat",
-  },
+  // {
+  //   id: "deepseek-chat",
+  //   name: "DeepSeek Chat",
+  //   description: "DeepSeek Chat",
+  // },
+  // {
+  //   id: "deepseek-coder",
+  //   name: "DeepSeek Coder",
+  //   description: "DeepSeek Chat",
+  // },
   {
     id: "gpt-3.5-turbo",
     name: "GPT-3.5 Turbo",
@@ -49,11 +49,11 @@ const modelList = ref<Model[]>([
     description:
       "官方最新的 gpt-4-turbo（知识库到 2023 年 4 月）、联网、多模态识别分析图片、生成图片.",
   },
-  // {
-  //   id: "gemini-pro",
-  //   name: "Gemini Pro",
-  //   description: "谷歌 Gemini.",
-  // },
+  {
+    id: "gemini-pro",
+    name: "Gemini Pro",
+    description: "谷歌 Gemini.",
+  },
 ]);
 
 const handleSetModel = (modelId: string) => {
@@ -169,10 +169,6 @@ function handleSetContextLength(contextLength: number) {
             </div>
           </div>
           <div
-            v-if="
-              currentChat?.modelId.includes('deepseek') ||
-              currentChat?.modelId.includes('gpt-3.5')
-            "
             @click="handleSetContextLength(10)"
             class="w-full py-2 text-start px-4 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer flex flex-row justify-start items-center">
             <div class="w-8 h-8 flex justify-center items-center">
@@ -183,23 +179,6 @@ function handleSetContextLength(contextLength: number) {
             </div>
             <div class="flex flex-col justify-center items-start gap-y-1">
               <div class="font-black">上下文长度：10</div>
-              <!-- <div class="text-xs w-60 text-gray-400text-wrap">
-                一般上下文长度越大，回答越好，消耗的token也越多，设为10可以让AI知道最近10条消息.
-              </div> -->
-            </div>
-          </div>
-          <div
-            v-if="currentChat?.modelId.includes('deepseek')"
-            @click="handleSetContextLength(30)"
-            class="w-full py-2 text-start px-4 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer flex flex-row justify-start items-center">
-            <div class="w-8 h-8 flex justify-center items-center">
-              <Icon
-                v-if="currentChat?.contextLength === 30"
-                name="mdi:dot"
-                class="w-8 h-8 text-green-500 dark:text-green-700" />
-            </div>
-            <div class="flex flex-col justify-center items-start gap-y-1">
-              <div class="font-black">上下文长度：30</div>
               <!-- <div class="text-xs w-60 text-gray-400text-wrap">
                 一般上下文长度越大，回答越好，消耗的token也越多，设为10可以让AI知道最近10条消息.
               </div> -->
