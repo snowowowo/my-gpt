@@ -3,17 +3,21 @@ export default defineEventHandler(async (event) => {
   // console.log("%c [ body ]-3", "font-size:13px; background:pink; color:#bf2c9f;", body);
   const modelId = body.model;
   const messages = body.messages;
-  console.log('%c [ messages ]-6', 'font-size:13px; background:pink; color:#bf2c9f;', messages)
+  // console.log('%c [ messages ]-6', 'font-size:13px; background:pink; color:#bf2c9f;', messages)
 
-  const config = useRuntimeConfig(event);
-  const key = config.tutujinKey;
+  const isDeepSeek = modelId.includes("deepseek");
+
+  // const config = useRuntimeConfig(event);
+  // const key = config.tutujinKey;
+  const key = isDeepSeek ? process.env.DEEPSEEK_KEY : process.env.TUTUJIN_KEY;
+  const baseUrl = isDeepSeek ? "https://api.deepseek.com" : "https://api.tutujin.com";
 
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
   myHeaders.append("Authorization", `Bearer ${key}`);
   myHeaders.append("Content-Type", "application/json");
 
-  const raw = JSON.stringify({
+  const bodyData = JSON.stringify({
     model: modelId,
     messages: messages,
     // stream: false,
@@ -23,34 +27,17 @@ export default defineEventHandler(async (event) => {
   const requestOptions: RequestInit = {
     method: "POST",
     headers: myHeaders,
-    body: raw,
-    redirect: "follow",
+    body: bodyData,
+    // redirect: "follow",
   };
 
   try {
     const res = await fetch(
-      "https://api.tutujin.com/v1/chat/completions",
+      `${baseUrl}/v1/chat/completions`,
       requestOptions
     );
-    // await event.respondWith(res);
-
-    // console.log(
-    //   "%c [ res ]-33",
-    //   "font-size:13px; background:pink; color:#bf2c9f;",
-    //   res
-    // );
     return res;
-
-    // no stream
-    // const result = await res.json();
-    // console.log("%c [ result ]-22", "font-size:13px; background:pink; color:#bf2c9f;", result);
-    // return result;
   } catch (error: any) {
-    // console.log(
-    //   "%c [ error ]-40",
-    //   "font-size:13px; background:pink; color:#bf2c9f;",
-    //   error
-    // );
     throw createError({
       status: 400,
       message: "An error occurred",

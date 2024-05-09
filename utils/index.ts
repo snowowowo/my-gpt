@@ -96,11 +96,13 @@ function escapeSpecialChars(text: string): string {
 
 export function getModelNameByModelId(modelId: string) {
   const modelMap = new Map<string, string>([
+    ["deepseek-chat", "DeepSeek Chat (推荐)"],
+    ["deepseek-coder", "DeepSeek Coder (推荐)"],
     ["gpt-3.5-turbo", "GPT-3.5 Turbo"],
     ["gpt-3.5-turbo-1106", "GPT-3.5 Turbo 1106"],
     ["gpt-4", "GPT-4"],
     ["gpt-4-all", "GPT-4 All"],
-    ["gemini-pro", "Gemini Pro"],
+    // ["gemini-pro", "Gemini Pro"],
   ]);
 
   return modelMap.get(modelId) || "Unknown Model";
